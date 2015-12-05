@@ -2,16 +2,16 @@ package com.thens.generic.dao;
 
 import java.util.List;
 
-public interface GenericDao<E, K> {
-    E persist(E entity);
+public interface GenericDao<Entity, Key> {
+    Entity persist(Entity entity);
 
-    E merge(E entity);
+    Entity merge(Entity entity);
 
-    boolean remove(E entity);
+    boolean remove(Entity entity);
 
-    E find(K key);
+    Entity find(Key key);
 
-    List<E> findAll();
+    List<Entity> findAll();
 
-    List<E> findByField(String field, Object value);
+    List<Entity> findByField(String field, Object value);
 }

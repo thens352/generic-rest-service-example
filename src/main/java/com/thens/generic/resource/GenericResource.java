@@ -1,20 +1,20 @@
 package com.thens.generic.resource;
 
-import java.util.List;
+import javax.ws.rs.core.Response;
 
 /**
  * Created by Enes KURU on 12/5/2015.
  */
-public interface GenericResource<E, K> {
-    E persist(E entity);
+public interface GenericResource<Entity, Key, DTO> {
+    Response persist(DTO dto);
 
-    E merge(K key, E entity);
+    Response merge(Key key, DTO dto);
 
-    boolean remove(K key);
+    Response remove(Key key);
 
-    E find(K key);
+    Response find(Key key);
 
-    List<E> findAll();
+    Response findAll();
 
-    List<E> findByField(String field, String value);
+    Response findByField(String field, String value);
 }

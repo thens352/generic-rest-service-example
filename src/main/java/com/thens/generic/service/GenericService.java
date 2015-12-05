@@ -1,17 +1,20 @@
 package com.thens.generic.service;
 
+import com.thens.generic.util.GenericDTO;
+import com.thens.generic.util.GenericEntity;
+
 import java.util.List;
 
-public interface GenericService<E, K> {
-    E persist(E entity);
+public interface GenericService<Entity extends GenericEntity<DTO>, Key, DTO extends GenericDTO<Entity>> {
+    DTO persist(DTO entity);
 
-    E merge(E entity);
+    DTO merge(DTO entity);
 
-    boolean remove(E entity);
+    boolean remove(DTO entity);
 
-    E find(K key);
+    DTO find(Key key);
 
-    List<E> findAll();
+    List<DTO> findAll();
 
-    List<E> findByField(String field, Object value);
+    List<DTO> findByField(String field, Object value);
 }

@@ -12,8 +12,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @Repository
-public abstract class GenericDaoImpl<E, K extends Serializable> implements GenericDao<E, K> {
-    protected Class<E> entityType;
+public abstract class GenericDaoImpl<Entity, Key extends Serializable> implements GenericDao<Entity, Key> {
+    protected Class<Entity> entityType;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -24,23 +24,23 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
         entityType = (Class) pt.getActualTypeArguments()[0];
     }
 
-    public E persist(E entity) {
+    public Entity persist(Entity entity) {
         entityManager.persist(entity);
         return entity;
     }
 
-    public E merge(E entity) {
+    public Entity merge(Entity entity) {
         entityManager.merge(entity);
         return entity;
     }
 
-    public boolean remove(E entity) {
+    public boolean remove(Entity entity) {
         try {
             if (entityManager.contains(entity)) {
                 entityManager.remove(entity);
                 return true;
             } else {
-                E newEntity = entityManager.merge(entity);
+                Entity newEntity = entityManager.merge(entity);
                 entityManager.remove(newEntity);
                 return true;
             }
@@ -50,15 +50,15 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
         }
     }
 
-    public E find(K key) {
+    public Entity find(Key key) {
         return entityManager.find(entityType, key);
     }
 
-    public List<E> findAll() {
+    public List<Entity> findAll() {
         return entityManager.createQuery("from " + entityType.getName()).getResultList();
     }
 
-    public List<E> findByField(String field, Object value) {
+    public List<Entity> findByField(String field, Object value) {
         return entityManager.createQuery("select e from " + entityType.getName() + " e where e." + field + " =:" + field)
                 .setParameter(field, value).getResultList();
     }

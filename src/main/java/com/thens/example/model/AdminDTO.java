@@ -1,42 +1,34 @@
 package com.thens.example.model;
 
-import com.thens.generic.util.GenericEntity;
+import com.thens.generic.util.GenericDTO;
 
-import javax.persistence.*;
+import java.util.Objects;
 
-@Entity
-public class Admin extends GenericEntity<AdminDTO> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class AdminDTO extends GenericDTO<Admin>{
     private int adminId;
 
-    @Column(length = 20)
     private String username;
 
-    @Column(length = 20)
     private String password;
 
-    @Column(length = 60)
     private String name;
 
-    @Column(length = 60)
     private String surname;
 
-    @Column(length = 254)
     private String email;
 
     @Override
-    public AdminDTO toDTO() {
-        AdminDTO adminDTO = new AdminDTO();
+    public Admin toEntity() {
+        Admin admin = new Admin();
 
-        adminDTO.setAdminId(getAdminId());
-        adminDTO.setUsername(getUsername());
-        adminDTO.setPassword(getPassword());
-        adminDTO.setName(getName());
-        adminDTO.setSurname(getSurname());
-        adminDTO.setEmail(getEmail());
+        admin.setAdminId(getAdminId());
+        admin.setUsername(getUsername());
+        admin.setPassword(getPassword());
+        admin.setName(getName());
+        admin.setSurname(getSurname());
+        admin.setEmail(getEmail());
 
-        return adminDTO;
+        return admin;
     }
 
     public int getAdminId() {
@@ -87,4 +79,16 @@ public class Admin extends GenericEntity<AdminDTO> {
         this.email = email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdminDTO adminDTO = (AdminDTO) o;
+        return Objects.equals(adminId, adminDTO.adminId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(adminId);
+    }
 }
