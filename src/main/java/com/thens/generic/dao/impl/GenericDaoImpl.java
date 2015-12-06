@@ -1,7 +1,7 @@
 package com.thens.generic.dao.impl;
 
-
 import com.thens.generic.dao.GenericDao;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public abstract class GenericDaoImpl<Entity, Key extends Serializable> implements GenericDao<Entity, Key> {
+    private final static Logger logger = Logger.getLogger(GenericDaoImpl.class);
     protected Class<Entity> entityType;
 
     @PersistenceContext
@@ -24,43 +25,121 @@ public abstract class GenericDaoImpl<Entity, Key extends Serializable> implement
         entityType = (Class) pt.getActualTypeArguments()[0];
     }
 
+    /**
+     * Save entity method
+     *
+     * @param entity
+     * @return Entity
+     */
     public Entity persist(Entity entity) {
-        entityManager.persist(entity);
-        return entity;
+        logger.debug(entityType.getName() + " - persist begin");
+        try {
+            entityManager.persist(entity);
+            logger.debug(entityType.getName() + " - persist end");
+            return entity;
+        } catch (Exception e) {
+            logger.error(entityType.getName() + " - persist throws error : ", e);
+            return null;
+        }
     }
 
+    /**
+     * Update entity method
+     *
+     * @param entity
+     * @return Entity
+     */
     public Entity merge(Entity entity) {
-        entityManager.merge(entity);
-        return entity;
+        logger.debug(entityType.getName() + " - merge begin");
+        try {
+            entityManager.merge(entity);
+            logger.debug(entityType.getName() + " - merge end");
+            return entity;
+        } catch (Exception e) {
+            logger.error(entityType.getName() + " - merge throws error : ", e);
+            return null;
+        }
     }
 
+    /**
+     * Remove entity method
+     *
+     * @param entity
+     * @return boolean
+     */
     public boolean remove(Entity entity) {
+        logger.debug(entityType.getName() + " - remove begin");
         try {
             if (entityManager.contains(entity)) {
                 entityManager.remove(entity);
-                return true;
             } else {
                 Entity newEntity = entityManager.merge(entity);
                 entityManager.remove(newEntity);
-                return true;
             }
+            logger.debug(entityType.getName() + " - remove end");
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(entityType.getName() + " - remove throws error : ", e);
             return false;
         }
     }
 
+    /**
+     * Find entity method
+     *
+     * @param key
+     * @return Entity
+     */
     public Entity find(Key key) {
-        return entityManager.find(entityType, key);
+        Entity entity;
+        logger.debug(entityType.getName() + " - find begin with key : " + key.toString());
+        try {
+            entity = entityManager.find(entityType, key);
+            logger.debug(entityType.getName() + " - find end");
+            return entity;
+        } catch (Exception e) {
+            logger.error(entityType.getName() + " - find throws error : ", e);
+            return null;
+        }
     }
 
+    /**
+     * Find all entites method
+     *
+     * @return List<Entity>
+     */
     public List<Entity> findAll() {
-        return entityManager.createQuery("from " + entityType.getName()).getResultList();
+        List<Entity> entities;
+        logger.debug(entityType.getName() + " - findAll begin");
+        try {
+            entities = entityManager.createQuery("from " + entityType.getName()).getResultList();
+            logger.debug(entityType.getName() + " - find end");
+            return entities;
+        } catch (Exception e) {
+            logger.error(entityType.getName() + " - find throws error : ", e);
+            return null;
+        }
     }
 
+    /**
+     * Find entites by a field value
+     *
+     * @param field
+     * @param value
+     * @return List<Entity>
+     */
     public List<Entity> findByField(String field, Object value) {
-        return entityManager.createQuery("select e from " + entityType.getName() + " e where e." + field + " =:" + field)
-                .setParameter(field, value).getResultList();
+        List<Entity> entities;
+        logger.debug(entityType.getName() + " - findByField begin with field : " + field + ", value : " + value);
+        try {
+            entities = entityManager.createQuery("select e from " + entityType.getName()
+                    + " e where e." + field + " =:" + field).setParameter(field, value).getResultList();
+            logger.debug(entityType.getName() + " - findByField end");
+            return entities;
+        } catch (Exception e) {
+            logger.error(entityType.getName() + " - findByField throws error : ", e);
+            return null;
+        }
     }
 }
 

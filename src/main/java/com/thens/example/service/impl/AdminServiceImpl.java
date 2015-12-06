@@ -17,7 +17,6 @@ public class AdminServiceImpl extends GenericServiceImpl<Admin, Integer, AdminDT
     private AdminDao adminDao;
 
     public AdminServiceImpl() {
-
     }
 
     @Autowired
