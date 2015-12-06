@@ -5,7 +5,7 @@ import com.thens.generic.util.GenericEntity;
 import javax.persistence.*;
 
 @Entity
-public class Admin extends GenericEntity<AdminDTO> {
+public class Admin implements GenericEntity<AdminDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int adminId;
@@ -25,7 +25,6 @@ public class Admin extends GenericEntity<AdminDTO> {
     @Column(length = 254)
     private String email;
 
-    @Override
     public AdminDTO toDTO() {
         AdminDTO adminDTO = new AdminDTO();
 

@@ -4,7 +4,7 @@ import com.thens.generic.util.GenericDTO;
 
 import java.util.Objects;
 
-public class AdminDTO extends GenericDTO<Admin>{
+public class AdminDTO implements GenericDTO<Admin>{
     private int adminId;
 
     private String username;
@@ -17,7 +17,6 @@ public class AdminDTO extends GenericDTO<Admin>{
 
     private String email;
 
-    @Override
     public Admin toEntity() {
         Admin admin = new Admin();
 
