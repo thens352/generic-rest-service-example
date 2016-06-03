@@ -7,11 +7,15 @@ public interface GenericDao<Entity, Key> {
 
     Entity merge(Entity entity);
 
-    boolean remove(Entity entity);
+    boolean remove(Key key);
 
     Entity find(Key key);
 
     List<Entity> findAll();
 
     List<Entity> findByField(String field, Object value);
+
+    Entity executeNamedQueryForSingleResult(String queryName, List<Object> parameterList);
+
+    List<Entity> executeNamedQueryForResultList(String queryName, List<Object> parameterList);
 }

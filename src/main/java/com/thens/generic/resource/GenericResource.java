@@ -1,20 +1,21 @@
 package com.thens.generic.resource;
 
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 /**
  * Created by Enes KURU on 12/5/2015.
  */
 public interface GenericResource<Entity, Key, DTO> {
-    Response persist(DTO dto);
+    Response persist(HttpHeaders request, DTO dto);
 
-    Response merge(Key key, DTO dto);
+    Response merge(HttpHeaders request, Key key, DTO dto);
 
-    Response remove(Key key);
+    Response remove(HttpHeaders request, Key key);
 
-    Response find(Key key);
+    Response find(HttpHeaders request, Key key);
 
-    Response findAll();
+    Response findAll(HttpHeaders request);
 
-    Response findByField(String field, String value);
+    Response findByField(HttpHeaders request, String field, String value);
 }

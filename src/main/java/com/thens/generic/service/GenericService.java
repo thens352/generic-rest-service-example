@@ -10,7 +10,7 @@ public interface GenericService<Entity extends GenericEntity<DTO>, Key, DTO exte
 
     DTO merge(DTO entity);
 
-    boolean remove(DTO entity);
+    boolean remove(Key key);
 
     DTO find(Key key);
 
